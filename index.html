@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Cours interactif Bac II SE : pétrole et gaz naturel, avec ateliers animés et quiz.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Pétrole et gaz naturel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one reading column of chapters; each chapter pairs a short explanation with one hands-on lab (schéma animé + boutons). */
+:root{
+  --bg:#EEF2F4; --surface:#FFFFFF; --ink:#14202B; --muted:#5A6B78; --line:#CFD8DE;
+  --oil:#2B1E12; --amber:#B8650A; --amber-soft:#F6E3C8; --gas:#2A6C99; --gas-soft:#D8E8F3;
+  --water:#9CC4DC; --rock:#C9BBA4; --rock2:#B3A288; --cap:#7E7466; --source:#4A3A2A;
+  --good:#2E7D4F; --bad:#B23A2E; --good-soft:#DDF0E4; --bad-soft:#F6DEDA;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1519; --surface:#172129; --ink:#E6EDF1; --muted:#97A7B3; --line:#2B3842;
+  --oil:#E9D6BC; --amber:#F0A040; --amber-soft:#3A2A16; --gas:#6FB2E0; --gas-soft:#16303F;
+  --water:#2C5A75; --rock:#5B5040; --rock2:#4A4134; --cap:#3A342C; --source:#7A6248;
+  --good:#5BC488; --bad:#F07A6C; --good-soft:#163323; --bad-soft:#3B1C18; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1519; --surface:#172129; --ink:#E6EDF1; --muted:#97A7B3; --line:#2B3842;
+  --oil:#E9D6BC; --amber:#F0A040; --amber-soft:#3A2A16; --gas:#6FB2E0; --gas-soft:#16303F;
+  --water:#2C5A75; --rock:#5B5040; --rock2:#4A4134; --cap:#3A342C; --source:#7A6248;
+  --good:#5BC488; --bad:#F07A6C; --good-soft:#163323; --bad-soft:#3B1C18; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;margin:0}
+.wrap{max-width:880px;margin:0 auto;padding-inline:18px;padding-block:28px 80px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,3.6vw,2rem);font-weight:700}
+h3{font-size:1.1rem;font-weight:700}
+p{margin:0;max-width:65ch}
+sub{font-size:.72em;line-height:0}
+.f{font-family:var(--mono);font-weight:500;white-space:nowrap}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:700}
+.muted{color:var(--muted)}
+
+header.hero{display:grid;gap:14px;padding-block:8px 18px}
+.hero p{font-size:1.1rem}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:20px;scrollbar-width:thin}
+nav.toc a{flex:none;font-size:.85rem;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:5px 12px;background:var(--surface)}
+nav.toc a:hover{border-color:var(--amber)}
+
+section.ch{display:grid;gap:14px;padding-block:34px;border-bottom:1px solid var(--line)}
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:14px;min-width:0}
+.lab-title{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gas);font-weight:700}
+.lab-title::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gas);animation:pulse 1.8s infinite}
+@keyframes pulse{50%{opacity:.25}}
+.key{border-left:4px solid var(--amber);background:var(--amber-soft);padding:10px 14px;border-radius:0 10px 10px 0}
+.key strong{display:block;font-family:var(--display)}
+svg{display:block;width:100%;height:auto;max-width:100%}
+.svgbox{overflow-x:auto}
+
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;font-size:.92rem;cursor:pointer;border-radius:9px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:7px 13px;transition:background .2s,border-color .2s,transform .1s}
+button:hover{border-color:var(--amber)}
+button:active{transform:scale(.97)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gas);outline-offset:2px}
+button.primary{background:var(--amber);border-color:var(--amber);color:var(--surface);font-weight:700}
+button[aria-pressed="true"]{background:var(--gas);border-color:var(--gas);color:var(--surface)}
+input[type=range]{width:100%;accent-color:var(--amber)}
+label.rl{display:grid;gap:4px;font-size:.92rem}
+.readout{font-family:var(--mono);font-size:1.05rem;background:var(--bg);border-radius:10px;padding:10px 12px;overflow-x:auto}
+.info{background:var(--bg);border-radius:10px;padding:12px 14px;display:grid;gap:6px;min-height:6.5em}
+.info h3{color:var(--amber)}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+th{font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.tbl{overflow-x:auto}
+.ok{color:var(--good);font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.two>*{min-width:0}
+@media (max-width:640px){.two{grid-template-columns:1fr}}
+
+/* Formation */
+.stepper{display:flex;gap:6px;flex-wrap:wrap}
+.layer{transition:opacity .8s ease}
+.f1 .s2,.f1 .s3,.f1 .s4{opacity:0}
+.f2 .s3,.f2 .s4,.f2 .only1{opacity:0}
+.f3 .s4,.f3 .only1{opacity:0}
+.f4 .only1{opacity:0}
+.plank{animation:fall 3s linear infinite}
+@keyframes fall{from{transform:translateY(0);opacity:1}to{transform:translateY(215px);opacity:.2}}
+.drop{animation:rise 3.2s ease-in infinite}
+@keyframes rise{from{transform:translateY(0);opacity:0}15%{opacity:1}to{transform:translateY(-110px);opacity:0}}
+.heat{animation:glow 1.6s ease-in-out infinite alternate}
+@keyframes glow{from{opacity:.35}to{opacity:.85}}
+
+/* Distillation */
+.col-grid{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:16px;align-items:start}
+@media (max-width:640px){.col-grid{grid-template-columns:1fr}}
+.tray{cursor:pointer}
+.tray rect.hit{fill:transparent}
+.tray.on line{stroke:var(--amber);stroke-width:4}
+.tray.on text{fill:var(--amber);font-weight:700}
+.bub{animation:up var(--d) ease-out infinite;animation-delay:var(--dl)}
+@keyframes up{0%{transform:translateY(0);opacity:0}10%{opacity:1}85%{opacity:1}100%{transform:translateY(var(--h));opacity:0}}
+.flist{display:grid;gap:6px}
+.flist button{display:flex;justify-content:space-between;gap:8px;text-align:left}
+.flist .dot{width:12px;height:12px;border-radius:50%;flex:none;margin-top:5px}
+
+/* Craquage / isomérisation */
+.atom{transition:transform 1s cubic-bezier(.5,0,.2,1)}
+.atom circle{transition:fill .6s}
+.fade{transition:opacity .6s,transform 1s cubic-bezier(.5,0,.2,1)}
+.mol-label{font-family:var(--mono);font-size:13px;fill:var(--ink)}
+
+/* Octane */
+.mixbar{height:28px;border-radius:8px;overflow:hidden;display:flex;border:1px solid var(--line)}
+.mixbar div{transition:width .25s;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-family:var(--mono);color:var(--surface);white-space:nowrap;overflow:hidden}
+.engine{animation:knock calc(.12s) linear infinite;transform-origin:center}
+@keyframes knock{0%,100%{transform:translate(0,0)}25%{transform:translate(calc(var(--k)*1px),calc(var(--k)*-1px))}75%{transform:translate(calc(var(--k)*-1px),calc(var(--k)*1px))}}
+
+/* Combustion */
+.eq{font-family:var(--mono);font-size:clamp(1rem,3.2vw,1.35rem);text-align:center;padding:14px;background:var(--bg);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.coef{display:inline-block;min-width:1.2em;color:var(--amber);font-weight:700;transition:transform .3s}
+.coef.pop{animation:pop .5s}
+@keyframes pop{40%{transform:scale(1.6)}}
+.explain{display:grid;gap:4px;font-size:.95rem}
+.flame{transform-origin:50% 100%;animation:flick .5s ease-in-out infinite alternate}
+@keyframes flick{to{transform:scaleY(1.08) scaleX(.95)}}
+.soot{animation:smoke 2.4s linear infinite}
+@keyframes smoke{from{transform:translateY(0);opacity:.9}to{transform:translateY(-70px);opacity:0}}
+
+/* GNL / GPL */
+.gcard{display:grid;gap:8px;padding:14px;border-radius:12px;border:2px solid var(--line);transition:border-color .3s,transform .3s}
+.gcard.sel{border-color:var(--gas);transform:translateY(-3px)}
+.therm{height:14px;border-radius:7px;background:var(--bg);overflow:hidden;border:1px solid var(--line)}
+.therm div{height:100%;width:100%;background:linear-gradient(90deg,var(--gas),var(--amber));transition:width 1.6s ease}
+
+/* Quiz */
+.q{display:grid;gap:8px;padding-block:12px;border-bottom:1px solid var(--line)}
+.q:last-child{border-bottom:0}
+.fb{padding:8px 12px;border-radius:8px;font-size:.95rem}
+.fb.good{background:var(--good-soft);color:var(--ink);border-left:4px solid var(--good)}
+.fb.bad{background:var(--bad-soft);color:var(--ink);border-left:4px solid var(--bad)}
+.score{font-family:var(--display);font-size:1.4rem;font-weight:700}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0s!important;animation-iteration-count:1!important;transition-duration:0s!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <span class="eyebrow">Chimie · Bac II SE · version interactive</span>
+  <h1>Pétrole et gaz naturel</h1>
+  <p>Le fil conducteur : le pétrole brut est un <strong>mélange</strong>. On sépare d’abord ses constituants, puis on transforme certaines molécules pour obtenir des produits plus utiles. Dans chaque partie, un atelier animé : clique, glisse, observe.</p>
+</header>
+
+<nav class="toc" aria-label="Sommaire">
+  <a href="#bases">Bases</a><a href="#formation">Formation</a><a href="#distillation">Distillation</a><a href="#craquage">Craquage</a><a href="#reformage">Reformage & octane</a><a href="#gaz">Gaz naturel</a><a href="#combustion">Combustion</a><a href="#quiz">Quiz</a>
+</nav>
+
+<!-- BASES -->
+<section class="ch" id="bases">
+  <span class="eyebrow">01 · Les bases</span>
+  <h2>Hydrocarbures et alcanes</h2>
+  <p>Un <strong>hydrocarbure</strong> contient uniquement du carbone C et de l’hydrogène H. Un <strong>alcane</strong> à chaîne ouverte n’a que des liaisons simples : formule générale <span class="f">C<sub>n</sub>H<sub>2n+2</sub></span>. Un alcène avec une double liaison : <span class="f">C<sub>n</sub>H<sub>2n</sub></span>.</p>
+  <div class="lab">
+    <div class="lab-title">Atelier · Construis un alcane</div>
+    <label class="rl" for="nAlk">Nombre d’atomes de carbone n = <b id="nAlkV">1</b>
+      <input type="range" id="nAlk" min="1" max="8" value="1"></label>
+    <div class="svgbox"><svg id="alkSvg" viewBox="0 0 640 130" aria-label="Molécule d’alcane"></svg></div>
+    <div class="two">
+      <div class="readout" id="alkFormula"></div>
+      <div class="readout" id="alkState"></div>
+    </div>
+  </div>
+  <div class="key"><strong>Le pétrole brut n’a pas de formule.</strong>C’est un mélange d’alcanes, cycloalcanes, aromatiques et d’impuretés (dont des composés soufrés). L’essence aussi est un mélange, pas de l’octane pur.</div>
+</section>
+
+<!-- FORMATION -->
+<section class="ch" id="formation">
+  <span class="eyebrow">02 · Origine</span>
+  <h2>Comment se forme un gisement ?</h2>
+  <p>Pétrole et gaz viennent de matière organique ancienne enfouie. Leur formation prend des temps géologiques : ce sont des énergies <strong>fossiles, non renouvelables</strong> à l’échelle humaine.</p>
+  <div class="lab">
+    <div class="lab-title">Atelier · Les 4 étapes</div>
+    <div class="stepper" role="group" aria-label="Étapes">
+      <button data-step="1" aria-pressed="true">1. Accumulation</button>
+      <button data-step="2" aria-pressed="false">2. Enfouissement</button>
+      <button data-step="3" aria-pressed="false">3. Transformation</button>
+      <button data-step="4" aria-pressed="false">4. Migration</button>
+    </div>
+    <div class="svgbox"><svg id="geo" class="f1" viewBox="0 0 600 310" aria-label="Schéma de formation d’un gisement">
+      <defs>
+        <clipPath id="resClip"><path d="M0 230 Q300 60 600 230 L600 262 Q300 132 0 262 Z"/></clipPath>
+        <linearGradient id="heatG" x1="0" y1="1" x2="0" y2="0"><stop offset="0" style="stop-color:var(--amber);stop-opacity:.9"/><stop offset="1" style="stop-color:var(--amber);stop-opacity:0"/></linearGradient>
+      </defs>
+      <rect x="0" y="0" width="600" height="310" style="fill:var(--rock)"/>
+      <rect class="layer only1" x="0" y="0" width="600" height="282" style="fill:var(--water)"/>
+      <rect x="0" y="0" width="600" height="46" style="fill:var(--water)"/>
+      <g class="layer only1">
+        <circle class="plank" cx="80" cy="50" r="4" style="fill:var(--good)"/>
+        <circle class="plank" cx="190" cy="40" r="3" style="fill:var(--good);animation-delay:.7s"/>
+        <circle class="plank" cx="300" cy="55" r="4" style="fill:var(--good);animation-delay:1.4s"/>
+        <circle class="plank" cx="420" cy="45" r="3" style="fill:var(--good);animation-delay:.3s"/>
+        <circle class="plank" cx="530" cy="50" r="4" style="fill:var(--good);animation-delay:2s"/>
+        <text x="300" y="140" text-anchor="middle" class="mol-label" style="font-size:15px">Plancton et restes d’organismes se déposent</text>
+      </g>
+      <g class="layer s2">
+        <rect x="0" y="46" width="600" height="236" style="fill:var(--rock)"/>
+        <line x1="0" y1="90" x2="600" y2="90" style="stroke:var(--rock2);stroke-width:2"/>
+        <line x1="0" y1="130" x2="600" y2="130" style="stroke:var(--rock2);stroke-width:2"/>
+        <path d="M0 190 Q300 20 600 190 L600 230 Q300 60 0 230 Z" style="fill:var(--cap)"/>
+        <path d="M0 230 Q300 60 600 230 L600 262 Q300 132 0 262 Z" style="fill:var(--rock2)"/>
+        <g style="fill:var(--rock)">
+          <circle cx="150" cy="200" r="2"/><circle cx="220" cy="175" r="2"/><circle cx="300" cy="160" r="2"/><circle cx="380" cy="175" r="2"/><circle cx="450" cy="200" r="2"/><circle cx="260" cy="185" r="2"/><circle cx="340" cy="185" r="2"/>
+        </g>
+      </g>
+      <rect x="0" y="282" width="600" height="28" style="fill:var(--source)"/>
+      <text x="12" y="300" class="mol-label" style="fill:var(--surface);font-size:12px">Roche mère (matière organique)</text>
+      <g class="layer s2">
+        <text x="300" y="80" text-anchor="middle" class="mol-label" style="font-size:12px">Couverture imperméable</text>
+        <text x="520" y="220" text-anchor="middle" class="mol-label" style="font-size:12px">Réservoir poreux</text>
+      </g>
+      <g class="layer s3">
+        <rect x="0" y="250" width="600" height="60" fill="url(#heatG)" class="heat"/>
+        <text x="588" y="275" text-anchor="end" class="mol-label" style="font-size:12px;font-weight:700">Temps + chaleur → hydrocarbures</text>
+      </g>
+      <g class="layer s4">
+        <g clip-path="url(#resClip)">
+          <rect x="0" y="0" width="600" height="168" style="fill:var(--gas-soft)"/>
+          <rect x="0" y="168" width="600" height="28" style="fill:var(--oil)"/>
+          <rect x="0" y="196" width="600" height="80" style="fill:var(--water)"/>
+        </g>
+        <text x="300" y="160" text-anchor="middle" class="mol-label" style="font-size:12px;font-weight:700">GAZ</text>
+        <text x="300" y="187" text-anchor="middle" class="mol-label" style="font-size:12px;font-weight:700;fill:var(--surface)">PÉTROLE</text>
+        <text x="200" y="230" text-anchor="middle" class="mol-label" style="font-size:12px;font-weight:700">EAU</text>
+        <circle class="drop" cx="120" cy="290" r="4" style="fill:var(--amber)"/>
+        <circle class="drop" cx="230" cy="290" r="4" style="fill:var(--amber);animation-delay:1s"/>
+        <circle class="drop" cx="380" cy="290" r="4" style="fill:var(--amber);animation-delay:.5s"/>
+        <circle class="drop" cx="480" cy="290" r="4" style="fill:var(--amber);animation-delay:1.7s"/>
+        <line x1="300" y1="0" x2="300" y2="150" style="stroke:var(--ink);stroke-width:4"/>
+        <text x="308" y="30" class="mol-label" style="font-size:12px">Puits</text>
+      </g>
+    </svg></div>
+    <div class="info" id="geoInfo" aria-live="polite"></div>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>Terme</th><th>Explication simple</th></tr>
+    <tr><td><b>Roche mère</b></td><td>Contient la matière organique à l’origine des hydrocarbures.</td></tr>
+    <tr><td><b>Roche réservoir</b></td><td>Poreuse et perméable : stocke les fluides et les laisse circuler.</td></tr>
+    <tr><td><b>Roche couverture</b></td><td>Imperméable : empêche la fuite vers la surface.</td></tr>
+  </table></div>
+</section>
+
+<!-- DISTILLATION -->
+<section class="ch" id="distillation">
+  <span class="eyebrow">03 · Raffinage : séparer</span>
+  <h2>La colonne de distillation fractionnée</h2>
+  <p>Le brut est chauffé (environ 350 à 400 °C) puis entre près du bas de la colonne. La colonne est <strong>plus chaude en bas, plus froide en haut</strong>. Chaque constituant se condense là où la température descend sous sa température d’ébullition.</p>
+  <div class="lab">
+    <div class="lab-title">Atelier · Clique sur une fraction</div>
+    <div class="col-grid">
+      <div class="svgbox"><svg id="colSvg" viewBox="0 0 260 420" aria-label="Colonne de distillation">
+        <defs><linearGradient id="colG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--gas);stop-opacity:.35"/><stop offset="1" style="stop-color:var(--amber);stop-opacity:.55"/></linearGradient></defs>
+        <rect x="80" y="20" width="100" height="380" rx="18" fill="url(#colG)" style="stroke:var(--ink);stroke-width:2"/>
+        <text x="130" y="14" text-anchor="middle" class="mol-label" style="font-size:11px">plus froid</text>
+        <text x="130" y="416" text-anchor="middle" class="mol-label" style="font-size:11px">plus chaud</text>
+        <g id="bubbles"></g>
+        <g id="trays"></g>
+        <rect x="8" y="335" width="50" height="50" rx="8" style="fill:var(--amber)"/>
+        <text x="33" y="365" text-anchor="middle" class="mol-label" style="font-size:10px;fill:var(--surface);font-weight:700">FOUR</text>
+        <path d="M58 360 L80 360" style="stroke:var(--ink);stroke-width:3"/>
+      </svg></div>
+      <div style="display:grid;gap:10px;min-width:0">
+        <div class="flist" id="flist"></div>
+        <div class="info" id="colInfo" aria-live="polite"></div>
+      </div>
+    </div>
+    <p class="muted" style="font-size:.85rem">Intervalles de température et nombres de carbones : ordres de grandeur ; ils varient selon le brut et la raffinerie.</p>
+  </div>
+  <div class="key"><strong>Phrase essentielle</strong>La distillation fractionnée est une séparation <b>physique</b> fondée sur les différences de températures d’ébullition. Elle ne change pas la nature chimique des molécules. Une fraction reste un mélange.</div>
+</section>
+
+<!-- CRAQUAGE -->
+<section class="ch" id="craquage">
+  <span class="eyebrow">04 · Raffinage : transformer</span>
+  <h2>Le craquage : casser les grandes molécules</h2>
+  <p>Le brut fournit trop peu de produits légers par rapport aux besoins. Le <strong>craquage</strong> rompt des liaisons de grosses molécules pour former des molécules plus petites (alcanes et alcènes). C’est une transformation <strong>chimique</strong>, réalisée par la chaleur (thermique) ou avec un catalyseur (catalytique).</p>
+  <div class="lab">
+    <div class="lab-title">Atelier · Craque le décane</div>
+    <div class="btns"><button class="primary" id="crackBtn">Craquer la molécule</button><button id="crackReset">Recommencer</button></div>
+    <div class="svgbox"><svg id="crackSvg" viewBox="0 0 520 130" aria-label="Craquage du décane"></svg></div>
+    <div class="eq" id="crackEq">C<sub>10</sub>H<sub>22</sub></div>
+  </div>
+  <div class="lab">
+    <div class="lab-title">Atelier · Trouve le produit manquant X</div>
+    <div class="two">
+      <label class="rl" for="cn">Alcane de départ : n = <b id="cnV">12</b><input type="range" id="cn" min="6" max="20" value="12"></label>
+      <label class="rl" for="cm">Alcane obtenu : m = <b id="cmV">7</b><input type="range" id="cm" min="1" max="10" value="7"></label>
+    </div>
+    <div class="eq" id="xEq"></div>
+    <div class="tbl"><table id="xTbl"></table></div>
+  </div>
+</section>
+
+<!-- REFORMAGE -->
+<section class="ch" id="reformage">
+  <span class="eyebrow">05 · Améliorer l’essence</span>
+  <h2>Reformage, isomérisation et indice d’octane</h2>
+  <p>Le <strong>reformage catalytique</strong> réorganise la structure de molécules du naphta pour obtenir une essence qui résiste mieux au cliquetis. L’<strong>isomérisation</strong> transforme une chaîne linéaire en chaîne ramifiée : <em>même formule brute</em>, disposition différente.</p>
+  <div class="lab">
+    <div class="lab-title">Atelier · Isomérisation du pentane</div>
+    <div class="btns"><button class="primary" id="isoBtn">Ramifier la chaîne</button></div>
+    <div class="svgbox"><svg id="isoSvg" viewBox="0 0 340 150" aria-label="Isomérisation"></svg></div>
+    <div class="readout" id="isoTxt"></div>
+  </div>
+  <div class="lab">
+    <div class="lab-title">Atelier · Que veut dire « essence 95 » ?</div>
+    <label class="rl" for="oct">Indice d’octane : <b id="octV">95</b><input type="range" id="oct" min="0" max="100" value="95"></label>
+    <div class="mixbar" aria-hidden="true"><div id="isoBar" style="background:var(--good)"></div><div id="hepBar" style="background:var(--bad)"></div></div>
+    <div class="two">
+      <svg viewBox="0 0 200 120" aria-label="Moteur et cliquetis">
+        <g class="engine" id="engine" style="--k:0">
+          <rect x="70" y="20" width="60" height="80" rx="6" style="fill:var(--bg);stroke:var(--ink);stroke-width:2"/>
+          <rect x="74" y="60" width="52" height="16" rx="3" style="fill:var(--muted)"/>
+          <line x1="100" y1="76" x2="100" y2="100" style="stroke:var(--muted);stroke-width:5"/>
+          <g id="sparks" style="fill:var(--bad)"><polygon points="90,28 96,42 88,40 98,56 84,38 92,40"/><polygon points="112,30 116,44 110,42 118,56 106,40 112,42"/></g>
+        </g>
+      </svg>
+      <div class="info" id="octInfo" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="key"><strong>Craquage ou reformage ?</strong>Craquage : grandes molécules → plus petites. Reformage : modification de structure → meilleur indice d’octane. Les deux sont des transformations chimiques.</div>
+</section>
+
+<!-- GAZ -->
+<section class="ch" id="gaz">
+  <span class="eyebrow">06 · Gaz naturel</span>
+  <h2>GNL ou GPL ? Deux produits différents</h2>
+  <p>Le <strong>gaz naturel</strong> est un mélange dont le constituant principal est le méthane <span class="f">CH<sub>4</sub></span>. Incolore, inodore (on l’odorise pour détecter les fuites), moins dense que l’air, inflammable.</p>
+  <div class="lab">
+    <div class="lab-title">Atelier · Liquéfie chaque gaz</div>
+    <div class="btns"><button id="gnlBtn" aria-pressed="false">Refroidir (GNL)</button><button id="gplBtn" aria-pressed="false">Comprimer (GPL)</button></div>
+    <div class="two">
+      <div class="gcard" id="gnlCard">
+        <h3>GNL · gaz naturel liquéfié</h3>
+        <div>Méthane dominant</div>
+        <div class="therm"><div id="gnlTherm"></div></div>
+        <div class="readout" id="gnlTemp">20 °C · gaz</div>
+        <div class="muted">Refroidi vers −162 °C à pression proche de l’atmosphère. Transport par navire méthanier, puis regazéifié.</div>
+      </div>
+      <div class="gcard" id="gplCard">
+        <h3>GPL · gaz de pétrole liquéfié</h3>
+        <div>Propane et/ou butane</div>
+        <div class="therm"><div id="gplTherm" style="width:10%"></div></div>
+        <div class="readout" id="gplP">pression : 1 bar · gaz</div>
+        <div class="muted">Liquéfié sous pression modérée. C’est le contenu des bouteilles de gaz.</div>
+      </div>
+    </div>
+  </div>
+  <div class="key"><strong>Question classique</strong>Le gaz naturel est-il un corps pur ? Non : c’est un mélange, principalement de méthane. Le méthane pur, lui, est un corps pur composé.</div>
+</section>
+
+<!-- COMBUSTION -->
+<section class="ch" id="combustion">
+  <span class="eyebrow">07 · Combustion</span>
+  <h2>Équilibrer une combustion, étape par étape</h2>
+  <p>Combustible (hydrocarbure) + comburant (O<sub>2</sub>). Combustion complète : <span class="f">C<sub>x</sub>H<sub>y</sub> + (x + y/4) O<sub>2</sub> → x CO<sub>2</sub> + (y/2) H<sub>2</sub>O</span>. On change les coefficients, jamais les indices.</p>
+  <div class="lab">
+    <div class="lab-title">Atelier · Équilibreur guidé</div>
+    <div class="btns" id="hcBtns" role="group" aria-label="Choisir un hydrocarbure"></div>
+    <div class="eq" id="combEq"></div>
+    <div class="btns"><button class="primary" id="stepBtn">Étape suivante : carbone</button><button id="stepReset">Recommencer</button></div>
+    <div class="explain" id="combExplain" aria-live="polite"></div>
+  </div>
+  <div class="lab">
+    <div class="lab-title">Atelier · Complète ou incomplète ? (méthane)</div>
+    <label class="rl" for="o2">Dioxygène disponible pour 1 CH<sub>4</sub> : <b id="o2V"></b><input type="range" id="o2" min="0" max="2" step="1" value="2"></label>
+    <div class="two">
+      <svg viewBox="0 0 200 170" aria-label="Flamme">
+        <g id="sootG"></g>
+        <g class="flame"><path id="flameOuter" d="M100 150 C60 140 62 95 100 40 C138 95 140 140 100 150Z"/><path id="flameInner" d="M100 148 C82 140 84 115 100 90 C116 115 118 140 100 148Z"/></g>
+        <rect x="80" y="150" width="40" height="12" rx="3" style="fill:var(--muted)"/>
+      </svg>
+      <div class="info" id="flameInfo" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="lab">
+    <div class="lab-title">Atelier · Calcul de quantités (exercice 5)</div>
+    <label class="rl" for="mCH4">Masse de méthane brûlée : <b id="mV">8,0</b> g<input type="range" id="mCH4" min="1" max="64" step="1" value="8"></label>
+    <div class="tbl"><table id="calcTbl"></table></div>
+    <p class="muted" style="font-size:.85rem">M(CH<sub>4</sub>) = 16 g/mol ; M(CO<sub>2</sub>) = 44 g/mol. Proportions 1 : 2 : 1 : 2 d’après CH<sub>4</sub> + 2 O<sub>2</sub> → CO<sub>2</sub> + 2 H<sub>2</sub>O.</p>
+  </div>
+  <div class="key"><strong>Attention</strong>Le CO (monoxyde de carbone) est toxique, incolore et inodore. Une combustion complète produit du CO<sub>2</sub>, gaz à effet de serre : elle n’est pas « sans impact ».</div>
+</section>
+
+<!-- QUIZ -->
+<section class="ch" id="quiz">
+  <span class="eyebrow">08 · Vérifie-toi</span>
+  <h2>Vrai ou faux ?</h2>
+  <p>Réponds, puis lis la justification. Une bonne réponse au Bac donne toujours la raison.</p>
+  <div class="lab">
+    <div class="score" id="score">Score : 0 / 8</div>
+    <div id="quizBox"></div>
+    <button id="quizReset">Recommencer le quiz</button>
+  </div>
+  <div class="key"><strong>Méthode de réponse</strong>Définir : nature + principe. Comparer : un critère commun + la différence. Justifier : cause puis conséquence. Équilibrer : C, puis H, puis O, et vérifier.</div>
+</section>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+const sub=s=>s.replace(/(\d+)/g,"<sub>$1</sub>");
+const fmt=n=>{const v=Math.round(n*100)/100;return String(v).replace(".",",")};
+function hcFormula(x,y){return "C"+(x>1?"<sub>"+x+"</sub>":"")+"H<sub>"+y+"</sub>"}
+
+/* ---------- Alcane builder ---------- */
+const names=["méthane","éthane","propane","butane","pentane","hexane","heptane","octane"];
+function drawAlk(){
+  const n=+$("#nAlk").value; $("#nAlkV").textContent=n;
+  const svg=$("#alkSvg"); svg.innerHTML="";
+  const gap=72, x0=320-(n-1)*gap/2, y=65;
+  for(let i=0;i<n-1;i++) el("line",{x1:x0+i*gap,y1:y,x2:x0+(i+1)*gap,y2:y,style:"stroke:var(--ink);stroke-width:3"},svg);
+  for(let i=0;i<n;i++){
+    const cx=x0+i*gap; const hs=[[0,-38],[0,38]]; if(i===0)hs.push([-38,0]); if(i===n-1)hs.push([38,0]);
+    hs.forEach(([dx,dy])=>{el("line",{x1:cx,y1:y,x2:cx+dx,y2:y+dy,style:"stroke:var(--muted);stroke-width:2"},svg);
+      el("circle",{cx:cx+dx,cy:y+dy,r:9,style:"fill:var(--gas-soft);stroke:var(--gas);stroke-width:1.5"},svg);
+      const t=el("text",{x:cx+dx,y:y+dy+4,"text-anchor":"middle",class:"mol-label",style:"font-size:10px"},svg);t.textContent="H";});
+    el("circle",{cx,cy:y,r:16,style:"fill:var(--oil)"},svg);
+    const t=el("text",{x:cx,y:y+5,"text-anchor":"middle",class:"mol-label",style:"fill:var(--bg);font-weight:700"},svg);t.textContent="C";
+  }
+  $("#alkFormula").innerHTML=`${names[n-1]} : ${hcFormula(n,2*n+2)} &nbsp;·&nbsp; H = 2×${n}+2 = ${2*n+2}`;
+  $("#alkState").innerHTML=`Vers 20 °C : <b>${n<=4?"gaz":"liquide"}</b>`;
+}
+$("#nAlk").addEventListener("input",drawAlk); drawAlk();
+
+/* ---------- Formation ---------- */
+const geoTxt={
+ 1:["Accumulation","Des restes d’organismes, notamment du plancton, se déposent avec les sédiments au fond de l’eau, dans des milieux qui favorisent leur conservation."],
+ 2:["Enfouissement","De nouvelles couches recouvrent ces dépôts. Le manque de dioxygène limite la décomposition complète de la matière organique."],
+ 3:["Transformation","Avec le temps et l’augmentation de température lors de l’enfouissement, des transformations biologiques puis chimiques produisent des hydrocarbures dans la roche mère."],
+ 4:["Migration et accumulation","Les hydrocarbures migrent vers la roche réservoir et sont piégés sous la couverture. Classés selon leur masse volumique : gaz en haut, pétrole au milieu, eau en bas. Ils occupent les pores de la roche : ce n’est pas un lac souterrain."]};
+function setGeo(s){$("#geo").setAttribute("class","f"+s);document.querySelectorAll("[data-step]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.step==s));
+  $("#geoInfo").innerHTML=`<h3>${s}. ${geoTxt[s][0]}</h3><p>${geoTxt[s][1]}</p>`;}
+document.querySelectorAll("[data-step]").forEach(b=>b.addEventListener("click",()=>setGeo(+b.dataset.step))); setGeo(1);
+
+/* ---------- Distillation ---------- */
+const fr=[
+ {n:"Gaz de raffinerie",t:"< 20 °C",c:"C1 – C4",u:"Cuisson, chauffage (propane, butane)",y:60,col:"var(--gas)"},
+ {n:"Essence / naphta",t:"20 – 180 °C",c:"C5 – C10",u:"Carburant des moteurs à essence ; pétrochimie",y:115,col:"#3E9B8F"},
+ {n:"Kérosène",t:"180 – 250 °C",c:"C10 – C15",u:"Carburant des avions à réaction",y:170,col:"#8A9A3A"},
+ {n:"Gazole",t:"250 – 350 °C",c:"C14 – C20",u:"Moteurs diesel, chauffage",y:225,col:"#C99A2E"},
+ {n:"Fractions lourdes",t:"> 350 °C",c:"C20 – C40",u:"Traitements complémentaires : huiles lubrifiantes, distillation sous vide",y:280,col:"var(--amber)"},
+ {n:"Résidu",t:"ne se vaporise pas",c:"> C40",u:"Fiouls lourds, bitumes après traitement",y:385,col:"var(--source)"}];
+const trays=$("#trays"), bub=$("#bubbles"), fl=$("#flist");
+fr.forEach((f,i)=>{
+  const g=el("g",{class:"tray",tabindex:0,role:"button","aria-label":f.n},trays);
+  el("rect",{class:"hit",x:80,y:f.y-18,width:175,height:36},g);
+  el("line",{x1:84,y1:f.y,x2:176,y2:f.y,style:"stroke:var(--ink);stroke-width:2;stroke-dasharray:6 4"},g);
+  el("path",{d:`M180 ${f.y} L240 ${f.y}`,style:"stroke:"+f.col+";stroke-width:3"},g);
+  el("circle",{cx:244,cy:f.y,r:6,style:"fill:"+f.col},g);
+  g.addEventListener("click",()=>pick(i)); g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick(i)}});
+  if(i<5) for(let k=0;k<3;k++){
+    const c=el("circle",{class:"bub",cx:95+((i*3+k)*13)%70,cy:375,r:4,style:`fill:${f.col};--h:${f.y-375+6}px;--d:${2.2+i*.35}s;--dl:${(k*0.9+i*0.4).toFixed(1)}s`},bub);
+  }
+  const b=document.createElement("button"); b.innerHTML=`<span style="display:flex;gap:8px"><span class="dot" style="background:${f.col}"></span>${f.n}</span><span class="f muted">${f.t}</span>`;
+  b.addEventListener("click",()=>pick(i)); fl.appendChild(b);
+});
+function pick(i){
+  [...trays.children].forEach((g,j)=>g.classList.toggle("on",i===j));
+  [...fl.children].forEach((b,j)=>b.setAttribute("aria-pressed",i===j));
+  const f=fr[i], pos=i<2?"vers le sommet : fraction volatile, petites molécules":i>3?"vers la base : peu volatile, grandes molécules":"au milieu de la colonne";
+  $("#colInfo").innerHTML=`<h3>${f.n}</h3><div><b>Ébullition :</b> ${f.t} · <b>Molécules :</b> ${f.c}</div><div><b>Usage :</b> ${f.u}</div><div class="muted">Position : ${pos}.</div>`;
+}
+pick(1);
+
+/* ---------- Craquage ---------- */
+const cs=$("#crackSvg"); let cAtoms=[], bondBreak, dbl, plus, lab1, lab2;
+function buildCrack(){
+  cs.innerHTML=""; cAtoms=[];
+  for(let i=0;i<9;i++){const l=el("line",{x1:30+i*45,y1:55,x2:75+i*45,y2:55,style:"stroke:var(--ink);stroke-width:3",class:"fade"},cs); if(i===7)bondBreak=l;}
+  dbl=el("line",{x1:390,y1:64,x2:435,y2:64,class:"fade",style:"stroke:var(--amber);stroke-width:3;opacity:0;transform:translateX(60px)"},cs);
+  plus=el("text",{x:390,y:62,"text-anchor":"middle",class:"mol-label fade",style:"font-size:24px;opacity:0"},cs); plus.textContent="+";
+  for(let i=0;i<10;i++){
+    const g=el("g",{class:"atom"},cs); el("circle",{cx:30+i*45,cy:55,r:15,style:"fill:var(--oil)"},g);
+    const t=el("text",{x:30+i*45,y:60,"text-anchor":"middle",class:"mol-label",style:"fill:var(--bg);font-weight:700"},g);t.textContent="C"; cAtoms.push(g);}
+  lab1=el("text",{x:180,y:110,"text-anchor":"middle",class:"mol-label fade",style:"opacity:0"},cs); lab1.textContent="C8H18 : alcane (octane)";
+  lab2=el("text",{x:472,y:110,"text-anchor":"middle",class:"mol-label fade",style:"opacity:0;fill:var(--amber)"},cs); lab2.textContent="C2H4 : alcène";
+  $("#crackEq").innerHTML="C<sub>10</sub>H<sub>22</sub> &nbsp;<span class='muted'>(décane)</span>";
+}
+$("#crackBtn").addEventListener("click",()=>{
+  bondBreak.style.opacity=0;
+  cAtoms.slice(8).forEach(g=>{g.style.transform="translateX(60px)";g.querySelector("circle").style.fill="var(--amber)"});
+  dbl.style.opacity=1; plus.style.opacity=1; lab1.style.opacity=1; lab2.style.opacity=1;
+  [...cs.querySelectorAll("line")].forEach(l=>{ if(+l.getAttribute("x1")===390 && l!==dbl) l.style.transform="translateX(60px)"});
+  $("#crackEq").innerHTML="C<sub>10</sub>H<sub>22</sub> → C<sub>8</sub>H<sub>18</sub> + C<sub>2</sub>H<sub>4</sub> &nbsp;<span class='ok'>✓ C : 10 = 8 + 2 · H : 22 = 18 + 4</span>";
+});
+$("#crackReset").addEventListener("click",buildCrack); buildCrack();
+
+function updX(){
+  const n=+$("#cn").value, cm=$("#cm"); cm.max=n-2; if(+cm.value>n-2)cm.value=n-2;
+  const m=+cm.value, k=n-m; $("#cnV").textContent=n; $("#cmV").textContent=m;
+  $("#xEq").innerHTML=`${hcFormula(n,2*n+2)} → ${hcFormula(m,2*m+2)} + <b style="color:var(--amber)">X = ${hcFormula(k,2*k)}</b>`;
+  $("#xTbl").innerHTML=`<tr><th>Atomes</th><th>Départ</th><th>Déjà utilisés</th><th>Reste pour X</th></tr>
+   <tr><td>Carbone</td><td>${n}</td><td>${m}</td><td><b>${n} − ${m} = ${k}</b></td></tr>
+   <tr><td>Hydrogène</td><td>${2*n+2}</td><td>${2*m+2}</td><td><b>${2*n+2} − ${2*m+2} = ${2*k}</b></td></tr>
+   <tr><td colspan="4">X = ${hcFormula(k,2*k)} est de forme C<sub>n</sub>H<sub>2n</sub> : c’est un <b>alcène</b> (dans le modèle « alcane + alcène »).</td></tr>`;
+}
+$("#cn").addEventListener("input",updX); $("#cm").addEventListener("input",updX); updX();
+
+/* ---------- Isomérisation ---------- */
+const is=$("#isoSvg"); const lin=[[50,60],[110,60],[170,60],[230,60],[290,60]], br=[[80,60],[140,60],[200,60],[260,60],[140,118]];
+const bLin=el("g",{class:"fade"},is), bBr=el("g",{class:"fade",style:"opacity:0"},is);
+[[0,1],[1,2],[2,3],[3,4]].forEach(([a,b])=>el("line",{x1:lin[a][0],y1:lin[a][1],x2:lin[b][0],y2:lin[b][1],style:"stroke:var(--ink);stroke-width:3"},bLin));
+[[0,1],[1,2],[2,3],[1,4]].forEach(([a,b])=>el("line",{x1:br[a][0],y1:br[a][1],x2:br[b][0],y2:br[b][1],style:"stroke:var(--ink);stroke-width:3"},bBr));
+const isoAt=lin.map(([x,y])=>{const g=el("g",{class:"atom"},is);el("circle",{cx:x,cy:y,r:15,style:"fill:var(--oil)"},g);const t=el("text",{x,y:y+5,"text-anchor":"middle",class:"mol-label",style:"fill:var(--bg);font-weight:700"},g);t.textContent="C";return g});
+let ram=false;
+function setIso(){
+  isoAt.forEach((g,i)=>{const [x,y]=ram?br[i]:lin[i]; g.style.transform=`translate(${x-lin[i][0]}px,${y-lin[i][1]}px)`;});
+  bLin.style.opacity=ram?0:1; bBr.style.opacity=ram?1:0;
+  isoAt[4].querySelector("circle").style.fill=ram?"var(--amber)":"var(--oil)";
+  $("#isoBtn").textContent=ram?"Revenir à la chaîne linéaire":"Ramifier la chaîne";
+  $("#isoTxt").innerHTML=ram?"2-méthylbutane (ramifié) : C<sub>5</sub>H<sub>12</sub> &nbsp;·&nbsp; <span class='ok'>même formule brute</span>, meilleure résistance au cliquetis":"Pentane (linéaire) : C<sub>5</sub>H<sub>12</sub> &nbsp;·&nbsp; CH<sub>3</sub>-CH<sub>2</sub>-CH<sub>2</sub>-CH<sub>2</sub>-CH<sub>3</sub>";
+}
+$("#isoBtn").addEventListener("click",()=>{ram=!ram;setIso()}); setIso();
+
+/* ---------- Octane ---------- */
+function updOct(){
+  const v=+$("#oct").value; $("#octV").textContent=v;
+  $("#isoBar").style.width=v+"%"; $("#isoBar").textContent=v>=18?`isooctane ${v} %`:"";
+  $("#hepBar").style.width=(100-v)+"%"; $("#hepBar").textContent=(100-v)>=18?`n-heptane ${100-v} %`:"";
+  const k=((100-v)/100*4).toFixed(2); $("#engine").style.setProperty("--k",k); $("#sparks").style.opacity=v<80?1:v<92?.4:0;
+  $("#octInfo").innerHTML=`<h3>Indice ${v}</h3><p>Dans l’essai, cette essence résiste au cliquetis <b>comme</b> un mélange de référence de ${v} % d’isooctane (indice 100) et ${100-v} % de n-heptane (indice 0).</p><p class="muted">Ce n’est pas sa composition réelle. ${v<80?"Résistance faible : le moteur « cogne ».":v<92?"Résistance moyenne.":"Bonne résistance au cliquetis."}</p>`;
+}
+$("#oct").addEventListener("input",updOct); updOct();
+
+/* ---------- GNL / GPL ---------- */
+let tmr;
+$("#gnlBtn").addEventListener("click",()=>{
+  const on=$("#gnlBtn").getAttribute("aria-pressed")!=="true"; $("#gnlBtn").setAttribute("aria-pressed",on); $("#gnlCard").classList.toggle("sel",on);
+  $("#gnlTherm").style.width=on?"4%":"100%"; clearInterval(tmr);
+  let T=on?20:-162; const target=on?-162:20, step=on?-9:9;
+  tmr=setInterval(()=>{T+=step; if((on&&T<=target)||(!on&&T>=target)){T=target;clearInterval(tmr)}
+    $("#gnlTemp").textContent=`${T} °C · ${T<=-162?"liquide (volume environ 600 fois plus petit)":"gaz"}`;},60);
+});
+$("#gplBtn").addEventListener("click",()=>{
+  const on=$("#gplBtn").getAttribute("aria-pressed")!=="true"; $("#gplBtn").setAttribute("aria-pressed",on); $("#gplCard").classList.toggle("sel",on);
+  $("#gplTherm").style.width=on?"70%":"10%";
+  $("#gplP").textContent=on?"pression : quelques bars · liquide en bouteille":"pression : 1 bar · gaz";
+});
+
+/* ---------- Combustion guidée ---------- */
+const hcs=[["CH4","méthane",1,4],["C2H6","éthane",2,6],["C3H8","propane",3,8],["C4H10","butane",4,10],["C8H18","octane",8,18],["C2H4","éthène",2,4]];
+let cur=hcs[2], step=0;
+const hb=$("#hcBtns");
+hcs.forEach(h=>{const b=document.createElement("button");b.innerHTML=hcFormula(h[2],h[3]);b.title=h[1];b.addEventListener("click",()=>{cur=h;step=0;renderComb()});hb.appendChild(b)});
+function coefs(x,y){const o=x+y/4; let k=1; while(Math.abs(o*k-Math.round(o*k))>1e-9)k*=2; return {k,o,a:k,b:o*k,c:x*k,d:y/2*k}}
+function c(v,show,pop){return `<span class="coef ${pop?"pop":""}">${show?(v===1?"":v):"?"}</span>`}
+function renderComb(){
+  [...hb.children].forEach((b,i)=>b.setAttribute("aria-pressed",hcs[i]===cur));
+  const [,nm,x,y]=cur, r=coefs(x,y), o=x+y/4, fr=Math.abs(o-Math.round(o))>1e-9;
+  const final=step>=4||(step>=3&&!fr);
+  const A=final?r.a:1, B=final?r.b:o, C=final?r.c:x, D=final?r.d:y/2;
+  const Bs=(!final&&fr)?(o*2)+"/2":B;
+  $("#combEq").innerHTML=`${c(A,true,step===4)}${hcFormula(x,y)} + ${step>=3?`<span class="coef ${step===3?"pop":""}">${Bs===1?"":Bs}</span>`:c(0,false)} O<sub>2</sub> → ${step>=1?`<span class="coef ${step===1?"pop":""}">${C===1?"":C}</span>`:c(0,false)} CO<sub>2</sub> + ${step>=2?`<span class="coef ${step===2?"pop":""}">${D===1?"":D}</span>`:c(0,false)} H<sub>2</sub>O`;
+  const L=[];
+  if(step>=1)L.push(`<div><b>Carbone :</b> ${x} C à gauche → il faut <b>${x} CO<sub>2</sub></b>.</div>`);
+  if(step>=2)L.push(`<div><b>Hydrogène :</b> ${y} H à gauche → il faut <b>${y/2} H<sub>2</sub>O</b> (chaque H<sub>2</sub>O a 2 H).</div>`);
+  if(step>=3)L.push(`<div><b>Oxygène :</b> à droite ${x}×2 + ${y/2} = ${2*x+y/2} atomes O → <b>${fr?(2*x+y/2)+"/2":o} O<sub>2</sub></b>.</div>`);
+  if(step>=4&&fr)L.push(`<div><b>Simplifier :</b> coefficient fractionnaire → on multiplie toute l’équation par ${r.k}.</div>`);
+  if(final)L.push(`<div class="ok">✓ Vérifié : C ${r.a*x} = ${r.c} · H ${r.a*y} = ${r.d*2} · O ${r.b*2} = ${r.c*2+r.d}</div>`);
+  if(step===0)L.push(`<div class="muted">Combustion complète du ${nm}. Méthode : carbone, puis hydrogène, puis oxygène.</div>`);
+  $("#combExplain").innerHTML=L.join("");
+  const labels=["Étape suivante : carbone","Étape suivante : hydrogène","Étape suivante : oxygène",fr?"Étape suivante : nombres entiers":"Terminé","Terminé"];
+  $("#stepBtn").textContent=labels[step]; $("#stepBtn").disabled=final;
+}
+$("#stepBtn").addEventListener("click",()=>{step++;renderComb()});
+$("#stepReset").addEventListener("click",()=>{step=0;renderComb()}); renderComb();
+
+/* ---------- Flamme ---------- */
+const o2t=[
+ {v:"1 O₂ (très insuffisant)",eq:"CH<sub>4</sub> + O<sub>2</sub> → C + 2 H<sub>2</sub>O",t:"Formation de <b>suie C</b> : flamme jaune et fumée noire.",col:["#E8A33A","#F5D46A"],soot:6},
+ {v:"1,5 O₂ (insuffisant)",eq:"2 CH<sub>4</sub> + 3 O<sub>2</sub> → 2 CO + 4 H<sub>2</sub>O",t:"Formation de <b>monoxyde de carbone CO</b> : gaz toxique, incolore, inodore.",col:["#E8A33A","#7FB6E0"],soot:2},
+ {v:"2 O₂ (suffisant)",eq:"CH<sub>4</sub> + 2 O<sub>2</sub> → CO<sub>2</sub> + 2 H<sub>2</sub>O",t:"Combustion <b>complète</b> : flamme bleue, produits CO<sub>2</sub> et H<sub>2</sub>O.",col:["#3D7FD1","#A9D4F5"],soot:0}];
+function updFlame(){
+  const d=o2t[+$("#o2").value]; $("#o2V").textContent=d.v;
+  $("#flameOuter").style.fill=d.col[0]; $("#flameInner").style.fill=d.col[1];
+  const sg=$("#sootG"); sg.innerHTML="";
+  for(let i=0;i<d.soot;i++) el("circle",{class:"soot",cx:88+(i*7)%26,cy:45,r:5,style:`fill:var(--muted);animation-delay:${i*0.4}s`},sg);
+  $("#flameInfo").innerHTML=`<div class="readout" style="background:var(--surface)">${d.eq}</div><p>${d.t}</p>`;
+}
+$("#o2").addEventListener("input",updFlame); updFlame();
+
+/* ---------- Calcul ---------- */
+function updCalc(){
+  const m=+$("#mCH4").value, n=m/16; $("#mV").textContent=m+",0";
+  $("#calcTbl").innerHTML=`<tr><th>Grandeur</th><th>Calcul</th><th>Résultat</th></tr>
+  <tr><td>n(CH<sub>4</sub>)</td><td>m/M = ${m} / 16</td><td><b>${fmt(n)} mol</b></td></tr>
+  <tr><td>n(CO<sub>2</sub>)</td><td>= n(CH<sub>4</sub>)</td><td><b>${fmt(n)} mol</b></td></tr>
+  <tr><td>m(CO<sub>2</sub>)</td><td>${fmt(n)} × 44</td><td><b>${fmt(n*44)} g</b></td></tr>
+  <tr><td>n(O<sub>2</sub>)</td><td>2 × ${fmt(n)}</td><td><b>${fmt(2*n)} mol</b></td></tr>`;
+}
+$("#mCH4").addEventListener("input",updCalc); updCalc();
+
+/* ---------- Quiz ---------- */
+const Q=[
+ ["Le pétrole brut possède une formule chimique unique.",false,"C’est un mélange de nombreuses molécules : aucune formule unique ne le représente."],
+ ["La distillation fractionnée est une transformation chimique.",false,"Elle est physique : on sépare les molécules sans changer leur nature."],
+ ["Le méthane est le principal constituant du gaz naturel.",true,"Le gaz naturel est principalement constitué de CH₄."],
+ ["Les fractions les plus volatiles sont recueillies vers le sommet.",true,"Elles bouillent à basse température et montent jusqu’aux zones froides."],
+ ["Le craquage peut produire des alcènes.",true,"Il peut former des molécules avec une double liaison C=C, comme l’éthène."],
+ ["L’indice d’octane est le pourcentage réel d’octane dans l’essence.",false,"Il compare la résistance au cliquetis à un mélange de référence."],
+ ["Le pétrole et le gaz sont renouvelables à l’échelle humaine.",false,"Leur formation est beaucoup plus lente que leur consommation."],
+ ["Une combustion incomplète peut produire du CO.",true,"Avec un manque de O₂, il peut se former du monoxyde de carbone."]];
+let sc=0;
+function buildQuiz(){
+  sc=0; $("#score").textContent="Score : 0 / 8"; const box=$("#quizBox"); box.innerHTML="";
+  Q.forEach(([s,ans,why],i)=>{
+    const d=document.createElement("div"); d.className="q";
+    d.innerHTML=`<div><b>${String.fromCharCode(97+i)}.</b> ${s}</div><div class="btns"><button data-a="1">Vrai</button><button data-a="0">Faux</button></div><div class="fb" hidden></div>`;
+    d.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{
+      const good=(b.dataset.a==="1")===ans; const fb=d.querySelector(".fb");
+      fb.hidden=false; fb.className="fb "+(good?"good":"bad");
+      fb.innerHTML=`<b>${good?"Bien vu !":"Pas tout à fait."}</b> ${ans?"Vrai":"Faux"} : ${why}`;
+      d.querySelectorAll("button").forEach(x=>x.disabled=true); b.setAttribute("aria-pressed","true");
+      if(good){sc++;$("#score").textContent=`Score : ${sc} / 8`}
+    }));
+    box.appendChild(d);
+  });
+}
+$("#quizReset").addEventListener("click",buildQuiz); buildQuiz();
+</script>
+
+</body>
+</html>
